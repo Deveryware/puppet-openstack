@@ -1,8 +1,10 @@
 node default {
+ include resolvconf
  include jenkins
 }
 
 node /^permiloc-*/ {
+ include resolvconf
  include jenkins
  include dw_permiloc
  include redis
@@ -14,6 +16,7 @@ node /^permiloc-*/ {
 }
 
 node /^mpa-*/ {
+ include resolvconf
  include jenkins
  include dw_mpa
  include haproxy
@@ -22,6 +25,7 @@ node /^mpa-*/ {
 }
 
 node /^mpb-*/ {
+ include resolvconf
  include jenkins
  include dw_mypub
  include haproxy
