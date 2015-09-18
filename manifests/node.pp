@@ -1,7 +1,7 @@
 node default {
  include resolvconf
  include jenkins
- inlude stack
+ include stack
 }
 
 node /^permiloc-*/ {
