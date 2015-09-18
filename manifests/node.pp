@@ -4,6 +4,14 @@ node default {
  include stack
 }
 
+node common-rabbitmq {
+ include resolvconf
+ include jenkins
+ include stack
+
+ include '::rabbitmq'
+}
+
 node /^permiloc-*/ {
  include resolvconf
  include jenkins
