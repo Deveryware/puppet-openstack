@@ -8,8 +8,17 @@ node common-rabbitmq {
  include resolvconf
  include jenkins
  include stack
+ 
+ file { "/etc/apt/apt.conf.d/99auth":       
+    owner     => root,
+    group     => root,
+    content   => "APT::Get::AllowUnauthenticated yes;",
+    mode      => 644,
+  }
 
- include '::rabbitmq'
+  class { '::rabbitmq':
+    require   => File["/etc/apt/apt.conf.d/99auth"],
+  }
 }
 
 node /^permiloc-*/ {
@@ -32,7 +41,17 @@ node /^mpa-*/ {
  include dw_mpa
  include haproxy
  include '::mongodb::server'
- include '::rabbitmq'
+
+ file { "/etc/apt/apt.conf.d/99auth":
+    owner     => root,
+    group     => root,
+    content   => "APT::Get::AllowUnauthenticated yes;",
+    mode      => 644,
+ }
+
+ class { '::rabbitmq':
+    require   => File["/etc/apt/apt.conf.d/99auth"],
+ }
 }
 
 node /^mpb-*/ {
