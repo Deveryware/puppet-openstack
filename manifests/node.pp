@@ -1,11 +1,13 @@
 node default {
  include resolvconf
  include jenkins
+ inlude stack
 }
 
 node /^permiloc-*/ {
  include resolvconf
  include jenkins
+ include stack
  include dw_permiloc
  include redis
  include haproxy
@@ -18,6 +20,7 @@ node /^permiloc-*/ {
 node /^mpa-*/ {
  include resolvconf
  include jenkins
+ include stack
  include dw_mpa
  include haproxy
  include '::mongodb::server'
@@ -27,6 +30,7 @@ node /^mpa-*/ {
 node /^mpb-*/ {
  include resolvconf
  include jenkins
+ include stack
  include dw_mypub
  include haproxy
  include '::mysql::server'
