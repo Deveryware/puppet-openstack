@@ -30,8 +30,20 @@ node /^permiloc-*/ {
  include haproxy
 
  class { '::mysql::server':
-  override_options => { 'mysqld' => { 'max_connections' => '3000' } } 
+  override_options => { 'mysqld' => { 'max_connections' => '3000', 'bind-address' => '0.0.0.0' } } 
  }
+
+ mysql_user { 'root@%':
+  ensure => 'present'
+ }
+
+ mysql_grant { 'root@%':
+  ensure => 'present',
+  options => ['GRANT'],
+  privileges => ['ALL'],
+  user => 'root@%'
+ }
+ 
 }
 
 node /^mpa-*/ {
