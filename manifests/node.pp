@@ -29,6 +29,8 @@ node /^permiloc-*/ {
  include redis
  include haproxy
 
+ package { "openjdk-7-jdk": ensure => "installed" }
+
  class { '::mysql::server':
   override_options => { 'mysqld' => { 'max_connections' => '3000', 'bind-address' => '0.0.0.0' } } 
  }
@@ -54,6 +56,8 @@ node /^mpa-*/ {
  include haproxy
  include '::mongodb::server'
 
+ package { "openjdk-7-jdk": ensure => "installed" }
+
  file { "/etc/apt/apt.conf.d/99auth":
     owner     => root,
     group     => root,
@@ -73,6 +77,8 @@ node /^mpb-*/ {
  include dw_mypub
  include haproxy
  include '::mysql::server'
+
+ package { "openjdk-7-jdk": ensure => "installed" }
 
  class { 'elasticsearch':
   package_url => 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.1.deb'
