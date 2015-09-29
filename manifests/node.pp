@@ -54,7 +54,13 @@ node /^mpa-*/ {
  include stack
  include dw_mpa
  include haproxy
- include '::mongodb::server'
+
+ class { '::mongodb::globals':
+  manage_package_repo => true,
+  server_package_name => 'mongodb-org',
+  version => '2.6.11'
+ }->
+ class { '::mongodb::server': }
 
  package { "openjdk-7-jdk": ensure => "installed" }
 
