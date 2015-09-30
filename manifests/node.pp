@@ -59,6 +59,7 @@ node /^mpa-*/ {
   manage_package_repo => true,
   server_package_name => 'mongodb-org',
   version => '2.6.11'
+  require => File["/etc/apt/apt.conf.d/99auth"],
  }->
  class { '::mongodb::server': }
 
