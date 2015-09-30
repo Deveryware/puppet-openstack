@@ -63,7 +63,9 @@ node /^mpa-*/ {
   version => '2.6.11',
   require => File["/etc/apt/apt.conf.d/99auth"],
  }->
- class { '::mongodb::server': }
+ class { '::mongodb::server': 
+  bind_ip => ['0.0.0.0'],
+ }
 
  package { "openjdk-7-jdk": ensure => "installed" }
 
