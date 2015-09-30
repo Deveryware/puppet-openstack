@@ -33,17 +33,16 @@ node /^permiloc-*/ {
 
  class { '::mysql::server':
   override_options => { 'mysqld' => { 'max_connections' => '3000', 'bind-address' => '0.0.0.0' } } 
- }
-
+ } ->
  mysql_user { 'root@%':
   ensure => 'present'
- }
-
- mysql_grant { 'root@%':
+ } ->
+ mysql_grant { 'root@%/*.*':
   ensure => 'present',
   options => ['GRANT'],
   privileges => ['ALL'],
-  user => 'root@%'
+  user => 'root@%',
+  table => '*.*',
  }
  
 }
@@ -89,7 +88,6 @@ node /^mpb-*/ {
 
  class { 'elasticsearch':
   package_url => 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.1.deb'
- }
-
+ } ->
  elasticsearch::instance { 'es-01': }
 }
