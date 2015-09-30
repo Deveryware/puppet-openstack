@@ -54,6 +54,9 @@ node /^mpa-*/ {
  include dw_mpa
  include haproxy
 
+ class { 'locales': 
+  locales   => ['en_US.UTF-8 UTF-8', 'fr_FR.UTF-8 UTF-8'],
+ }-> 
  class { '::mongodb::globals':
   manage_package_repo => true,
   server_package_name => 'mongodb-org',
