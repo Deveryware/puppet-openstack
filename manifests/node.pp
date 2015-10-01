@@ -18,7 +18,14 @@ node common-rabbitmq {
 
   class { '::rabbitmq':
     require   => File["/etc/apt/apt.conf.d/99auth"],
-  }
+  }->
+ rabbitmq_vhost { 'mpa':
+  ensure => present,
+ }->
+ rabbitmq_user { 'mpa':
+  admin    => true,
+  password => 'password',
+ }
 }
 
 node /^permiloc-*/ {
@@ -78,6 +85,13 @@ node /^mpa-*/ {
 
  class { '::rabbitmq':
     require   => File["/etc/apt/apt.conf.d/99auth"],
+ }->
+ rabbitmq_vhost { 'mpa':
+  ensure => present,
+ }->
+ rabbitmq_user { 'mpa':
+  admin    => true,
+  password => 'password',
  }
 }
 
