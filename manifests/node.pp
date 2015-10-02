@@ -79,8 +79,8 @@ node /^mpa-*/ {
  class { '::rabbitmq':
     require   => File["/etc/apt/apt.conf.d/99auth"],
  }->
- exec { 'vhost': command => '/usr/bin/sudo rabbitmqctl add_vhost mpa', }->
- exec { 'user': command => '/usr/bin/sudo rabbitmqctl add_user mpa password', }->
+ exec { 'vhost': command => '/usr/bin/sudo rabbitmqctl add_vhost mpa', unless => '/usr/bin/sudo rabbitmqctl list_vhosts | grep -qi mpa', }->
+ exec { 'user': command => '/usr/bin/sudo rabbitmqctl add_user mpa password', unless => '/usr/bin/sudo rabbitmqctl list_users | grep -qi mpa', }->
  exec { 'admin': command => '/usr/bin/sudo rabbitmqctl set_user_tags mpa administrator', }
 }
 
