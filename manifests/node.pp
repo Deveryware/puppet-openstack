@@ -81,7 +81,8 @@ node /^mpa-*/ {
  }->
  exec { 'vhost': command => '/usr/bin/sudo rabbitmqctl add_vhost mpa', unless => '/usr/bin/sudo rabbitmqctl list_vhosts | grep -qi mpa', }->
  exec { 'user': command => '/usr/bin/sudo rabbitmqctl add_user mpa password', unless => '/usr/bin/sudo rabbitmqctl list_users | grep -qi mpa', }->
- exec { 'admin': command => '/usr/bin/sudo rabbitmqctl set_user_tags mpa administrator', }
+ exec { 'admin': command => '/usr/bin/sudo rabbitmqctl set_user_tags mpa administrator', }->
+ exec { 'permission': command => '/usr/bin/sudo rabbitmqctl set_permissions -p mpa mpa ".*" ".*" ".*"', }
 }
 
 node /^mpb-*/ {
