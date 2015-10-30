@@ -4,6 +4,51 @@ node default {
  include stack
 }
 
+node common-graylog2 {
+ include resolvconf
+ include jenkins
+ include stack
+
+  class { 'locales':
+  locales   => ['en_US.UTF-8 UTF-8', 'fr_FR.UTF-8 UTF-8'],
+ }->
+ class { '::mongodb::globals':
+  manage_package_repo => true,
+  server_package_name => 'mongodb-org',
+  version => '2.6.11',
+  require => File["/etc/apt/apt.conf.d/99auth"],
+ }->
+ class { '::mongodb::server':
+  bind_ip => ['0.0.0.0'],
+ }
+ 
+ class { 'elasticsearch':
+  package_url => 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.1.deb',
+  config => { 'cluster.name' => 'graylog2-server' }
+ } ->
+ elasticsearch::instance { 'es-01': }
+
+ class {'graylog2::repo':
+  version => '1.1'
+ }->
+ class {'graylog2::server':
+  password_secret    => 'nLz2BaffxZaeGwpOcf1y1uV0VW8lk2CgzNXrr9QXTDtQgcMQzmWuUwCoHKIRWA5jhXrHjBC8MIeH5kPCLhbdJknXSb3G6Y2y',
+  root_password_sha2 => '77a1559e590dbb180c272b5947e37731c9527da0f980d05e268b2d9b8a387177'
+ }->
+ class {'graylog2::web':
+  application_secret => 'nLz2BaffxZaeGwpOcf1y1uV0VW8lk2CgzNXrr9QXTDtQgcMQzmWuUwCoHKIRWA5jhXrHjBC8MIeH5kPCLhbdJknXSb3G6Y2y',
+ }
+
+ package { "openjdk-7-jdk": ensure => "installed" }
+
+ file { "/etc/apt/apt.conf.d/99auth":
+    owner     => root,
+    group     => root,
+    content   => "APT::Get::AllowUnauthenticated yes;",
+    mode      => 644,
+  }
+}
+
 node common-rabbitmq {
  include resolvconf
  include jenkins
