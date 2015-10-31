@@ -29,7 +29,7 @@ node common-graylog2 {
  elasticsearch::instance { 'es-01': }
 
  class {'graylog2::repo':
-  version => '1.1'
+  version => '1.2.2'
  }->
  class {'graylog2::server':
   password_secret    => 'nLz2BaffxZaeGwpOcf1y1uV0VW8lk2CgzNXrr9QXTDtQgcMQzmWuUwCoHKIRWA5jhXrHjBC8MIeH5kPCLhbdJknXSb3G6Y2y',
