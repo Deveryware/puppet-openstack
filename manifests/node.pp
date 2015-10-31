@@ -24,7 +24,7 @@ node common-graylog2 {
  
  class { 'elasticsearch':
   package_url => 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.1.deb',
-  config => { 'cluster.name' => 'graylog2-server' }
+  config => { 'cluster.name' => 'graylog2' }
  } ->
  elasticsearch::instance { 'es-01': }
 
