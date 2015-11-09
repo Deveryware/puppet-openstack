@@ -77,7 +77,7 @@ node /^permiloc-*/ {
  package { "openjdk-7-jdk": ensure => "installed" }
 
  class { '::mysql::server':
-  override_options => { 'mysqld' => { 'max_connections' => '3000', 'bind-address' => '0.0.0.0' } } 
+  override_options => { 'mysqld' => { 'max_connections' => '4000', 'bind-address' => '0.0.0.0' } } 
  } ->
  mysql_user { 'root@%':
   ensure => 'present'
@@ -89,7 +89,22 @@ node /^permiloc-*/ {
   user => 'root@%',
   table => '*.*',
  }
- 
+
+ file { "/etc/apt/apt.conf.d/99auth":
+    owner     => root,
+    group     => root,
+    content   => "APT::Get::AllowUnauthenticated yes;",
+    mode      => 644,
+ }
+
+ class { '::rabbitmq':
+    require   => File["/etc/apt/apt.conf.d/99auth"],
+ }->
+ exec { 'vhost': command => '/usr/bin/sudo rabbitmqctl add_vhost permiloc', unless => '/usr/bin/sudo rabbitmqctl list_vhosts | grep -qi permiloc', }->
+ exec { 'user': command => '/usr/bin/sudo rabbitmqctl add_user permiloc password', unless => '/usr/bin/sudo rabbitmqctl list_users | grep -qi permiloc', }->
+ exec { 'admin': command => '/usr/bin/sudo rabbitmqctl set_user_tags permiloc administrator', }->
+ exec { 'permission': command => '/usr/bin/sudo rabbitmqctl set_permissions -p permiloc permiloc ".*" ".*" ".*"', }
+  
 }
 
 node /^mpa-*/ {
