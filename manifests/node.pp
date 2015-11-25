@@ -151,7 +151,9 @@ node /^mpb-*/ {
  include stack
  include dw_mypub
  include haproxy
- include '::mysql::server'
+ class { '::mysql::server':
+  override_options => { 'mysqld' => { 'max_connections' => '5000', 'bind-address' => '0.0.0.0' } }
+ }
 
  package { "openjdk-7-jdk": ensure => "installed" }
 
