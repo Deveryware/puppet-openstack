@@ -5,7 +5,7 @@ class dw_mypub {
 		managehome => 'true',
                 ensure => 'present',
                 shell => '/dev/null',
-                home => '/home/dw_mypub'
+                home => '/srv/dw_mypub'
         }
 
 	file {'/etc/security/limits.conf':
